@@ -1,45 +1,43 @@
 #!/bin/python3
 
-from cryptography.fernet import Fernet as Fn
+from cryptography.fernet import Fernet as fn
 
 class Cerberus:
 
-    def __init__(self):
-        self.key = None
-        self.password_file = None
-        self.password_dict = None
+	def __init__(self):
+		self.key = None
+		self.password_file = None
+		self.password_dict = {}
 
-    def create_key(self, path):
-        print("Creating Key...")
-        self.key = Fn.generate_key()
-        with open(path, "w") as file:
-            file.write(str(self.key))
-        print("Key File Created at {path}")
+	def create_key(self, path):
+		print("Creating Key...")
+		self.key = fn.generate_key()
+		with open(path + ".key", "wb") as f:
+				f.write(self.key)
+		print("Key File Created: " + path + '.key')
     
-    def init_key():
-        with open (path + ".key", 'rb') as file:
-            self.key = file.read()
-            print("Key Path Selected: {path}. Welcome, Keeper.")
+	def load_key(self, path):
+		with open (path + ".key", 'rb') as file:
+			self.key = file.read()
+			print('Key Selected: ' + path + '.key')
 
-    def create_pass_file(self, path, initial_values=None):
-        self.password_file = path + ".pass"
-        if intial_values is not None:
-            for key, val in initial_values.items():
-                self.add_password(key, value)
-        else:
-            print("Invalid path. These roads will take you nowhere.")
+	def create_hell_file(self, path, initial_values=None):
+		self.password_file = path + ".pass"
+		if initial_values is not None:
+			for key, val in initial_values.items():
+				self.add_password(key, value)
+				print("HellPass File Created: " + path + '.pass')
+		else:
+			print("Invalid name. These roads will take you nowhere.")
 
-    def load_hell_file(self, path):
-        self.password_file = path + ".pass"
-        try:
-            with open (path, "r") as file:
-                for line in file:
-                    site, encrypted = line.split(":")
-                    self.password_dict[site] = Fn(self.key).decrypt(encrypted.encode())
-        except:
-            print("Cerberus searched and has returned with nothing. Is this the correct path?")
+	def load_hell_file(self, path):
+		self.password_file = path + '.pass'
+		with open (path + '.pass', "r") as f:
+			for line in f:
+				site, encrypted = line.split(":")
+				self.password_dict[site] = fn(self.key).decrypt(encrypted.encode())
 
-    def add_password(self, site, password):
+	def add_password(self, site, password):
 		    self.password_dict[site] = password
 		
 		    if self.password_file is not None:
@@ -49,11 +47,11 @@ class Cerberus:
 		    else:
 			    print("Error: Key not initiated")
 
-    def get_password(self, site):
-        try:
-            return self.password_dict[site]
-        except:
-            print("Cerberus cannot sniff out that password. Please check your entry and try again!")
+	def get_password(self, site):
+		try:
+			return self.password_dict[site]
+		except:
+			print("Cerberus cannot sniff out that password. Please check your entry and try again!")
 
 def main():
 	password = {}
@@ -69,20 +67,20 @@ _________             ___.
         \/     \/          \/     \/                 \/ 
 	""")
 	
-	print("\n Passwords guarded by the three-headed hound himself!")
+	print("\nPasswords guarded by the three-headed hound himself!\n")
 	print("Welcome, Keeper of Keys.")
 	print("-" * 50)
 	print("""Getting Started:
 		1. Create or initiate a key file
-        2. Create or initiate a Hell file
-        3. Create or retrieve a password 
+		2. Create or initiate a HellPass file
+		3. Create or retrieve a password 
 	""")
 	print("-" * 50)
 	print("""Select an Action:
 		(1) Create a new key
 		(2) Load existing key
-		(3) Create new Hell file
-		(4) Load existing Hell file
+		(3) Create new HellPass file
+		(4) Load existing HellPass file
 		(5) Add new password
 		(6) Get password
 		(Q) Quit
@@ -94,16 +92,16 @@ _________             ___.
 	while not done:
 		choice = input("Enter Selection: ")
 		if choice == "1":
-			path = input("Enter path: ")
+			path = input("Enter key name: ")
 			cb.create_key(path)
 		elif choice == "2":
-			path = input("Enter path: ")
+			path = input("Enter key name: ")
 			cb.load_key(path)
 		elif choice == "3":
-			path = input("Enter path: ")
+			path = input("Enter HellPass name: ")
 			cb.create_hell_file(path, password)
 		elif choice == "4":
-			path = input("Enter path: ")
+			path = input("Enter HellPass name: ")
 			cb.load_hell_file(path)
 		elif choice == "5":
 			site = input("Enter sitename: ")

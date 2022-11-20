@@ -24,9 +24,10 @@ class Cerberus:
 	def create_hell_file(self, path, initial_values=None):
 		self.password_file = path + ".pass"
 		if initial_values is not None:
+			self.add_password("Default", "Default")
+			print("HellPass File Created: " + path + '.pass')
 			for key, val in initial_values.items():
 				self.add_password(key, value)
-				print("HellPass File Created: " + path + '.pass')
 		else:
 			print("Invalid name. These roads will take you nowhere.")
 
